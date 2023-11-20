@@ -1,0 +1,43 @@
+﻿@page "/ownershiptypes"
+@using BlazorApp1.Models
+@using BlazorApp1.Services.Interfaces
+@attribute [StreamRendering(true)]
+@inject IOwnershipTypesService _ownershipTypesService
+
+<PageTitle>TestPageWithAPI</PageTitle>
+
+<h1>TestPageWithAPI</h1>
+
+@if (ownershiptypes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ownership Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ownershiptype in ownershiptypes)
+            {
+                <tr>
+                    <td>@ownershiptype.OwnershipTypeId</td>
+                    <td>@ownershiptype.OwnershipType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    IEnumerable<OwnerShipTypes>? ownershiptypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ownershiptypes = await _ownershipTypesService.GetOwnershipTypesAsync();
+    }
+}
